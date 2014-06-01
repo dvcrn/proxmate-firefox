@@ -1,0 +1,22 @@
+{
+  "name": "proxmate-firefox",
+  "version": "0.0.0",
+  "authors": [
+    "David Mohl <me@dave.cx>"
+  ],
+  "license": "CC BY-NC-SA 4.0",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "sinon": "~1.10.1"
+  },
+  "devDependencies": {
+    "sinon": "~1.10.1"
+  }
+}
