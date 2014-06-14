@@ -2,11 +2,31 @@ class Browser
   statusButton = null
 
   init: ->
-    @statusButton = require("sdk/widget").Widget({
-      id: "open-proxmate-btn",
-      label: "Click to Activate/Deactivate Proxmate",
-      contentURL: require('sdk/self').data.url("ressources/images/icon16.png"),
-      # onClick: setPluginStatus
+    require('sdk/ui')
+    panels = require("sdk/panel")
+    { ToggleButton } = require('sdk/ui/button/toggle')
+    self = require("sdk/self")
+
+    button = ToggleButton({
+      id: "my-button",
+      label: "my button",
+      icon: {
+        "16": require('sdk/self').data.url("ressources/images/icon16.png"),
+        "24": require('sdk/self').data.url("ressources/images/icon24.png"),
+        "48": require('sdk/self').data.url("ressources/images/icon48.png")
+      },
+      onChange: (state) ->
+        if state.checked
+          panel.show {
+            position: button
+          }
+    })
+
+    panel = panels.Panel({
+      contentURL: require('sdk/self').data.url("pages/popup/index.html"),
+      width: 264
+      onHide: ->
+        button.state('window', {checked: false})
     })
 
   ###*
@@ -37,7 +57,7 @@ class Browser
    * @param {string} iconUrl the url for the icon
   ###
   setIcon: (iconUrl) ->
-    @statusButton.contentURL = require('self').data.url(iconUrl)
+    @statusButton.contentURL = require('sdk/self').data.url(iconUrl)
 
   ###*
    * Sets the text for the icon (if possible)

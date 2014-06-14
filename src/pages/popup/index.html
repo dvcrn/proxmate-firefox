@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="css/popup.css">
+		<script src="../../bower_components/angular/angular.js"></script>
+		<script src="../../bower_components/angular-route/angular-route.js"></script>
+		<script src="../../src/pages/popup.js"></script>
+		<script src="../../src/pages/services/chrome.js"></script>
+	</head>
+	<body ng-app="popupApp" ng-controller="MainCtrl">
+		<section class="container">
+			<header>
+				<img class="logo" src="../../ressources/images/icon48.png" alt="">
+			</header>
+			<div class="options">
+				<p ng-show="installedPackages.length == 0">Hello! It looks like you have no packages installed as of yet. You need to install a few before ProxMate is able to work!</p>
+				<ul>
+					<li ng-show="proxmateStatus && installedPackages.length > 0" class="option"><a ng-click="deactivateProxmate()" href="#">Disable ProxMate</a></li>
+					<li ng-show="!proxmateStatus && installedPackages.length > 0" class="option"><a ng-click="activateProxmate()" href="#">Enable ProxMate</a></li>
+					<li class="option"><a target="_blank" href="http://proxmate.me/packages">Install new Packages</a></li>
+					<li ng-show="installedPackages.length > 0" class="option"><a href="../options/index.html" target='_blank'>Options</a></li>
+				</ul>
+			</div>
+			<footer>
+				<p>...thanks for using ProxMate!</p>
+			</footer>
+		</section>
+	</body>
+</html>
