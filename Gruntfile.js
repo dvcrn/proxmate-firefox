@@ -49,6 +49,13 @@ module.exports = function (grunt) {
                 ]
             }
         },
+        browserify: {
+            test: {
+                files: {
+                    '.tmp/test/test.js': ['.tmp/lib/*.js', '.tmp/test/*.js'],
+                }
+            }
+        },
         uglify: {
             dist: {
                 options: {
@@ -113,8 +120,12 @@ module.exports = function (grunt) {
                 files: [{
                         '.tmp/package.json': 'package.json',
                         '.tmp/lib/proxmate.json': 'proxmate.json',
+                        '.tmp/bower_components/jquery/dist/jquery.js': 'bower_components/jquery/dist/jquery.js',
                     },
                 ]
+            },
+            test: {
+                files: [{expand: true, src: ['test/testdata/**'], dest: '.tmp/'},]
             }
         },
         clean: {
@@ -142,6 +153,6 @@ module.exports = function (grunt) {
     ])
 
     grunt.registerTask('serve', ['src', 'watch'])
-    grunt.registerTask('test', ['src', 'karma']);
+    grunt.registerTask('test', ['src', 'copy:test', 'browserify:test','karma']);
     grunt.registerTask('default', 'test');
 };

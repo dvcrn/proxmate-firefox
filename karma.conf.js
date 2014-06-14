@@ -4,16 +4,13 @@ module.exports = function(config) {
     // base path, that will be used to resolve files and exclude
     basePath: '.tmp',
 
-    frameworks: ['commonjs', 'mocha', 'sinon-chai'],
+    frameworks: ['browserify', 'mocha', 'sinon-chai'],
 
     files: [
-      {pattern: 'test/test-*.js', included: true},
-      {pattern: 'lib/**/*.js', included: true},
+      {pattern: 'bower_components/jquery/dist/jquery.js', included: true},
+      {pattern: 'test/testdata/**/*.json', included: true},
+      {pattern: 'test/test.js', included: true},
     ],
-
-    preprocessors: {
-      '**/*.js': ['commonjs']
-    },
 
     browsers: ['PhantomJS'],
   });

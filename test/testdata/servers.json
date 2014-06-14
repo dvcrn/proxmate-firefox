@@ -1,0 +1,23 @@
+[
+  {
+    "host": "einsvonzwei.de",
+    "port": 8080,
+    "user": "hansi",
+    "password": "wursti",
+    "country": "52e5c40294ed6bd4032daa49"
+  },
+  {
+    "host": "zweivonzwei.de",
+    "port": 8080,
+    "user": "another user",
+    "password": "another password",
+    "country": "52e5c40294ed6bd4032daa49"
+  },
+  {
+    "host": "anothercountry.de",
+    "port": 8080,
+    "user": "another user",
+    "password": "another password",
+    "country": "anothercountry"
+  }
+]
