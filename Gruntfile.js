@@ -120,8 +120,9 @@ module.exports = function (grunt) {
                 files: [{
                         '.tmp/package.json': 'package.json',
                         '.tmp/lib/proxmate.json': 'proxmate.json',
-                        '.tmp/bower_components/jquery/dist/jquery.js': 'bower_components/jquery/dist/jquery.js',
+                        '.tmp/bower_components/jquery/dist/jquery.js': 'bower_components/jquery/dist/jquery.js'
                     },
+                    {expand: true, src: ['ressources/**/*'], dest: '.tmp/data'}
                 ]
             },
             test: {

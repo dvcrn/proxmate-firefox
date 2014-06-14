@@ -6,6 +6,7 @@ class Storage
   copyInterval: null
 
   init: (callback) ->
+    @internStorage = {}
     @copyFromChromeStorage( =>
       # If global_status is undefined, ProxMate very likely never got started yet.
       # In this case, global_status should be true
