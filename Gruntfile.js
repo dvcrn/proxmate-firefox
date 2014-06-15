@@ -3,6 +3,7 @@ module.exports = function (grunt) {
     require('load-grunt-tasks')(grunt);
 
     grunt.initConfig({
+        manifest: grunt.file.readJSON('package.json'),
         karma: {
             src: {
                 configFile: 'karma.conf.js',
@@ -37,15 +38,16 @@ module.exports = function (grunt) {
             },
             dist: {
                 expand: true,
-                src: ['src/**/*.coffee'],
-                dest: 'dist/',
-                ext: '.js'
+                src: ['**/*.coffee', '!src/test/**'],
+                dest: 'dist/lib',
+                ext: '.js',
+                cwd: 'src/'
             }
         },
         ngmin: {
             dist: {
                 files: [
-                    {expand: true, src: ['dist/src/pages/**/*.js'], dest: ''},
+                    {expand: true, src: ['dist/data/src/pages/**/*.js'], dest: ''},
                 ]
             }
         },
@@ -62,14 +64,14 @@ module.exports = function (grunt) {
                     mangle: true,
                     compress: true,
                     banner: '/*\n' +
-                            '  <%= manifest.name %> version <%= manifest.version %> by David Mohl\n' +
+                            '  <%= manifest.title %> version <%= manifest.version %> by David Mohl\n' +
                             '  Built on <%= grunt.template.today("yyyy-mm-dd @ HH:MM") %>\n' +
                             '  Please see github.com/dabido/proxmate-chrome/ for infos\n' +
                             '*/\n'
                 },
                 files: [{
                     expand: true,
-                    src: ['dist/**/*.js', '!dist/bower_components/**'],
+                    src: ['dist/**/*.js', '!dist/data/bower_components/**'],
                     dest: ''
                 }]
             }
@@ -79,14 +81,14 @@ module.exports = function (grunt) {
                 options: {
                     compilation_level: 'SIMPLE_OPTIMIZATIONS',
                     banner: '/*\n' +
-                            '  <%= manifest.name %> version <%= manifest.version %> by David Mohl\n' +
+                            '  <%= manifest.title %> version <%= manifest.version %> by David Mohl\n' +
                             '  Built on <%= grunt.template.today("yyyy-mm-dd @ HH:MM") %>\n' +
                             '  Please see github.com/dabido/proxmate-firefox/ for infos\n' +
                             '*/\n'
                 },
                 files: [{
                     expand: true,
-                    src: ['dist/**/*.js', '!dist/bower_components/**'],
+                    src: ['dist/**/*.js', '!dist/data/bower_components/**'],
                     dest: ''
                 }]
             }
@@ -128,16 +130,34 @@ module.exports = function (grunt) {
                     {expand: true, src: ['pages/**/*'], dest: '.tmp/data'},
                 ]
             },
+            dist: {
+                files: [{
+                    'dist/package.json': 'package.json',
+                    'dist/lib/proxmate.json': 'proxmate.json',
+                    'dist/data/bower_components/jquery/dist/jquery.js': 'bower_components/jquery/dist/jquery.min.js',
+                    'dist/data/bower_components/angular/angular.js': 'bower_components/angular/angular.min.js',
+                    'dist/data/bower_components/angular-route/angular-route.js': 'bower_components/angular-route/angular-route.min.js',
+                    },
+                    {expand: true, src: ['ressources/**/*'], dest: 'dist/data'},
+                    {expand: true, src: ['pages/**/*'], dest: 'dist/data'},
+                ]
+            },
             test: {
                 files: [{expand: true, src: ['test/testdata/**'], dest: '.tmp/'},]
             }
         },
         shell: {
-            pages: {
+            srcpages: {
                 command: 'mkdir -p .tmp/data/src && mv .tmp/lib/pages .tmp/data/src/pages'
             },
-            pageworker: {
+            srcpageworker: {
                 command: 'mkdir -p .tmp/data/src && mv .tmp/lib/page-worker .tmp/data/src/page-worker'
+            },
+            distpages: {
+                command: 'mkdir -p dist/data/src && mv dist/lib/pages dist/data/src/pages'
+            },
+            distpageworker: {
+                command: 'mkdir -p dist/data/src && mv dist/lib/page-worker dist/data/src/page-worker'
             },
         },
         clean: {
@@ -152,13 +172,16 @@ module.exports = function (grunt) {
         'coffee:src',
         'coffee:test',
         'copy:src',
-        'shell'
+        'shell:srcpages',
+        'shell:srcpageworker',
     ])
 
     grunt.registerTask('build', [
         'clean:dist',
         'coffee:dist',
         'copy:dist',
+        'shell:distpages',
+        'shell:distpageworker',
         'ngmin:dist',
         'closurecompiler:dist',
         'cssmin:dist',
