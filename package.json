@@ -1,11 +1,11 @@
 {
-  "name": "chrome-firefox",
-  "title": "chrome-firefox",
+  "name": "ProxMate",
+  "title": "Intelligent proxy package manager",
   "id": "jid1-Mg7TH7nunKHDnA",
-  "description": "a basic add-on",
-  "author": "",
+  "description": "Intelligent manager for proxy modules available on proxmate.me!",
+  "author": "David Mohl",
   "license": "CC BY-NC-SA 4.0",
-  "version": "1.0.0",
+  "version": "4.0.0",
   "devDependencies": {
     "grunt": "~0.4.4",
     "bower": "~1.2.8",
