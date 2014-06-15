@@ -30,6 +30,7 @@ angular.module('proxmateApp')
         $scope.status = 'Installed successfully!'
         $scope.$digest()
       else
+        console.info response
         $scope.status = response.message
         $scope.$digest()
     )

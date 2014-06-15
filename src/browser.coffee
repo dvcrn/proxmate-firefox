@@ -142,8 +142,7 @@ class Browser
           successCallback JSON.parse(response.text)
         else
           # Map object so it looks similar to the normal XHR object
-          response.responseJSON = {}
-          response.responseJSON.message = response.text
+          response.responseJSON = JSON.parse(response.text)
           errorCallback response
     }).get()
 

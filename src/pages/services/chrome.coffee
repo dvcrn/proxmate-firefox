@@ -51,4 +51,7 @@ angular.module('chrome', [])
 
       openUrl: (url, callback) ->
         emitMessage('openUrl', {url: url}, callback)
+
+      xhr: (url, callback) ->
+        emitMessage('xhr', {url: url}, callback)
     }

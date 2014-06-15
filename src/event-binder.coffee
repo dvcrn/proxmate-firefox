@@ -126,4 +126,18 @@ class EventBinder
       require("sdk/tabs").open(payload.url)
     )
 
+    port.on('xhr', (payload) =>
+      console.info 'doing xhr request...'
+      Browser.xhr(payload.url, 'GET', (data) ->
+        console.info 'xhr success'
+        console.info data
+        port.emit(payload.eventId, data)
+      , (data) ->
+        console.info 'failure'
+        console.info data
+        port.emit(payload.eventId, data)
+      )
+
+    )
+
 exports.EventBinder = new EventBinder()
