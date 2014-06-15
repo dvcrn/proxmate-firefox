@@ -78,7 +78,11 @@ class Browser
    * @param {string} iconUrl the url for the icon
   ###
   setIcon: (iconUrl) ->
-    # @statusButton.contentURL = require('sdk/self').data.url(iconUrl)
+    @statusButton.icon = {
+      "16": require('sdk/self').data.url(iconUrl),
+      "24": require('sdk/self').data.url(iconUrl),
+      "48": require('sdk/self').data.url(iconUrl)
+    }
 
   ###*
    * Sets the text for the icon (if possible)

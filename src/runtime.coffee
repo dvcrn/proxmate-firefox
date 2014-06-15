@@ -16,6 +16,7 @@ class Runtime
    * Starts the app. Retrieves servers and sets pac
   ###
   start: ->
+    Browser.generateButtons()
     console.info '-----> starting runtime....'
     globalStatus = Storage.get('global_status')
     console.info "global status: #{globalStatus}"
@@ -44,8 +45,6 @@ class Runtime
         pac = ProxyManager.generateProxyAutoconfigScript(packages, servers)
         console.info 'start before proxy manager pac'
         ProxyManager.setProxyAutoconfig(pac)
-
-    Browser.generateButtons()
 
   ###*
    * Restarts application flow. This means the app is already running and now getting started again.

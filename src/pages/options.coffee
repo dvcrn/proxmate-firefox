@@ -9,6 +9,8 @@ angular.module('optionsApp')
 
     $scope.fetchInstalledPackages = () ->
       Chrome.getInstalledPackages((packages) ->
+        console.info 'installed packages: '
+        console.info packages
         $scope.installedPackages = packages
         $scope.$digest()
       )

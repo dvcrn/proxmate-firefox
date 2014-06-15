@@ -13,14 +13,35 @@ class EventBinder
     {PackageManager} = require './package-manager'
     {Storage} = require './storage'
     {Runtime} = require './runtime'
-    # @port = {}
-    # @addEventListener()
-    # TODO: Implement me
+
     require("sdk/page-mod").PageMod({
         include: /.*proxmate\.me.*/,
         contentScriptFile: [
             require('sdk/self').data.url("bower_components/jquery/dist/jquery.js"),
             require('sdk/self').data.url("src/page-worker/proxmate.js")
+        ],
+        onAttach: (worker) =>
+          @handlePort(worker.port)
+    });
+
+    require("sdk/page-mod").PageMod({
+        include: /.*pages\/install\/index.html.*/,
+        contentScriptFile: [
+          require('sdk/self').data.url('bower_components/angular/angular.js'),
+          require('sdk/self').data.url('bower_components/angular-route/angular-route.js'),
+          require('sdk/self').data.url('src/pages/install.js'),
+          require('sdk/self').data.url('src/pages/services/chrome.js')
+        ],
+        onAttach: (worker) =>
+          @handlePort(worker.port)
+    });
+
+    require("sdk/page-mod").PageMod({
+        include: /.*pages\/options\/index.html.*/,
+        contentScriptFile: [
+          require('sdk/self').data.url('bower_components/angular/angular.js'),
+          require('sdk/self').data.url('src/pages/options.js'),
+          require('sdk/self').data.url('src/pages/services/chrome.js')
         ],
         onAttach: (worker) =>
           @handlePort(worker.port)
@@ -65,6 +86,8 @@ class EventBinder
 
     port.on('getInstalledPackages', (payload) ->
       packages = PackageManager.getInstalledPackages()
+      console.info 'Installed packages before giving back to port'
+      console.info packages
       port.emit(payload.eventId, packages)
     )
 
@@ -95,22 +118,11 @@ class EventBinder
     )
 
     port.on('getUrlFor', (payload) ->
+      console.info "requesting url for #{payload.url}"
       port.emit(payload.eventId, require('sdk/self').data.url(payload.url))
     )
 
     port.on('openUrl', (payload) =>
-      require("sdk/tabs").on("ready", (tab) =>
-        worker = tab.attach({
-          contentScriptFile: [
-            require('sdk/self').data.url('bower_components/angular/angular.js'),
-            require('sdk/self').data.url('bower_components/angular-route/angular-route.js'),
-            require('sdk/self').data.url('src/pages/install.js'),
-            require('sdk/self').data.url('src/pages/services/chrome.js')
-          ]
-        })
-        @handlePort worker.port
-      );
-
       require("sdk/tabs").open(payload.url)
     )
 

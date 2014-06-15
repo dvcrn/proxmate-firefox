@@ -46,6 +46,7 @@ class Storage
    * @return {String|Array} the value inside the storage
   ###
   get: (key) ->
+    console.info "Retrieving from storage #{key} - #{@internStorage[key]}"
     return @internStorage[key]
 
   ###*

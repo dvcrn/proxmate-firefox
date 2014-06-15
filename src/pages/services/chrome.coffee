@@ -16,7 +16,7 @@ angular.module('chrome', [])
 
       console.info "Triggering event: #{messageId}"
       # Generate a unique eventId for reading the response
-      eventId = "event-#{new Date().getTime()}"
+      eventId = "event-#{new Date().getTime()}" + Math.random().toString(36).substring(7)
       portVar.port.on(eventId, callback)
 
       # Add eventId to parameter
@@ -45,4 +45,10 @@ angular.module('chrome', [])
 
       setDonationkey: (key, callback) ->
         emitMessage('setDonationkey', {donationKey: key}, callback)
+
+      getUrlFor: (ressource, callback) ->
+        emitMessage('getUrlFor', {url: ressource}, callback)
+
+      openUrl: (url, callback) ->
+        emitMessage('openUrl', {url: url}, callback)
     }

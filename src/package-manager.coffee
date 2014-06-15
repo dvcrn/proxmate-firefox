@@ -93,6 +93,8 @@ class PackageManager
   getInstalledPackages: ->
     # Query storage for all installed packages
     installedPackages = Storage.get('installed_packages')
+    console.info 'Installed packages from storage: '
+    console.info installedPackages
     packageJson = []
     for id, version of installedPackages
       packageJson.push(Storage.get(id))

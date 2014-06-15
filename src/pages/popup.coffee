@@ -29,6 +29,12 @@ angular.module('popupApp')
         $scope.updateProxmateStatus()
       )
 
+    $scope.openOptions = ->
+      Chrome.getUrlFor('pages/options/index.html', (url) ->
+        Chrome.openUrl(url)
+        return
+      )
+
     $scope.updateProxmateStatus()
     $scope.fetchInstalledPackages()
   ]
