@@ -2,17 +2,20 @@
 
 class Storage
   # Internal array to keep in ram for faster look ups
-  internStorage: {}
-  copyInterval: null
+  constructor: ->
+    @internStorage = {}
+    @copyInterval = null
 
   init: (callback) ->
-    @internStorage = {}
-    @copyFromChromeStorage( =>
+    {Browser} = require './browser'
+
+    @copyFromChromeStorage(=>
       # If global_status is undefined, ProxMate very likely never got started yet.
       # In this case, global_status should be true
       globalStatus = @internStorage['global_status']
       if not globalStatus?
         @internStorage['global_status'] = true
+        @copyIntoChromeStorage()
 
       callback(@internStorage)
     )
@@ -21,8 +24,8 @@ class Storage
    * Writes the RAM storage into chrome HDD storage, after a 1 second delay
   ###
   copyIntoChromeStorage: ->
-    clearInterval @copyInterval
-    @copyInterval = setTimeout(=>
+    Browser.clearTimeout @copyInterval
+    @copyInterval = Browser.setTimeout(=>
       Browser.writeIntoStorage(@internStorage)
     , 1000)
 

@@ -2,11 +2,15 @@
 {Config} = require './config'
 {Browser} = require './browser'
 
-
 class ServerManager
-  servers: []
+  constructor: ->
+    @servers = []
 
   init: (callback) ->
+    {Storage} = require './storage'
+    {Config} = require './config'
+    {Browser} = require './browser'
+
     @servers = @loadServersFromStorage()
 
     if @servers.length > 0

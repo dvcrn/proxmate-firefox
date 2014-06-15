@@ -29,6 +29,8 @@
     "karma-phantomjs-launcher": "^0.1.4",
     "browserify": "^4.1.10",
     "karma-browserify": "^0.2.1",
-    "grunt-browserify": "^2.1.0"
+    "grunt-browserify": "^2.1.0",
+    "grunt-contrib-rename": "0.0.3",
+    "grunt-shell": "^0.7.0"
   }
 }

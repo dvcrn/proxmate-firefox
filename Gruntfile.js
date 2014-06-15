@@ -120,15 +120,25 @@ module.exports = function (grunt) {
                 files: [{
                         '.tmp/package.json': 'package.json',
                         '.tmp/lib/proxmate.json': 'proxmate.json',
-                        '.tmp/data/bower_components/jquery/dist/jquery.js': 'bower_components/jquery/dist/jquery.js'
+                        '.tmp/data/bower_components/jquery/dist/jquery.js': 'bower_components/jquery/dist/jquery.js',
+                        '.tmp/data/bower_components/angular/angular.js': 'bower_components/angular/angular.min.js',
+                        '.tmp/data/bower_components/angular-route/angular-route.js': 'bower_components/angular-route/angular-route.min.js',
                     },
                     {expand: true, src: ['ressources/**/*'], dest: '.tmp/data'},
-                    {expand: true, src: ['pages/**/*'], dest: '.tmp/data', cwd: 'src/'}
+                    {expand: true, src: ['pages/**/*'], dest: '.tmp/data'},
                 ]
             },
             test: {
                 files: [{expand: true, src: ['test/testdata/**'], dest: '.tmp/'},]
             }
+        },
+        shell: {
+            pages: {
+                command: 'mkdir -p .tmp/data/src && mv .tmp/lib/pages .tmp/data/src/pages'
+            },
+            pageworker: {
+                command: 'mkdir -p .tmp/data/src && mv .tmp/lib/page-worker .tmp/data/src/page-worker'
+            },
         },
         clean: {
             src: '.tmp',
@@ -141,7 +151,8 @@ module.exports = function (grunt) {
         'clean:src',
         'coffee:src',
         'coffee:test',
-        'copy:src'
+        'copy:src',
+        'shell'
     ])
 
     grunt.registerTask('build', [

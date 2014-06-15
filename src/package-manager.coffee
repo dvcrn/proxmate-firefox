@@ -4,6 +4,9 @@
 
 class PackageManager
   init: ->
+    {Storage} = require './storage'
+    {Config} = require './config'
+    {Browser} = require './browser'
     @checkForUpdates()
 
   ###*
@@ -31,6 +34,7 @@ class PackageManager
       # Compare and check for available updates
       for key, val of installedPackages
         # Check if the key exists in the downloaded list
+
         if key of versionRepository
           # If the version on the server is higher, reinstall the package
           if versionRepository[key] > val
@@ -56,6 +60,8 @@ class PackageManager
       packageUrl = "#{server}/package/#{key}/install.json?key=#{donationKey}"
 
     Browser.xhr packageUrl, 'GET', (packageData) ->
+      console.info 'in XHR'
+      console.info packageData
       # Query existing installed packages and add the new version / id
       installedPackages = Storage.get('installed_packages')
       if not installedPackages

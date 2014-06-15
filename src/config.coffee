@@ -1,6 +1,7 @@
 class Config
   # Internal config holder
-  config: {}
+  constructor: ->
+    @config = {}
 
   init: (configObj) ->
     @config = configObj

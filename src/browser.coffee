@@ -1,13 +1,25 @@
+{EventBinder} = require './event-binder'
+
 class Browser
-  statusButton = null
+  constructor: ->
+    @statusButton = null
+    @panel = null
 
   init: ->
+    {EventBinder} = require './event-binder'
+
+  generateButtons: ->
     require('sdk/ui')
     panels = require("sdk/panel")
     { ToggleButton } = require('sdk/ui/button/toggle')
     self = require("sdk/self")
 
-    button = ToggleButton({
+    if @statusButton?
+      @statusButton.destroy()
+    if @panel?
+      @panel.destroy()
+
+    @statusButton = ToggleButton({
       id: "my-button",
       label: "my button",
       icon: {
@@ -15,19 +27,22 @@ class Browser
         "24": require('sdk/self').data.url("ressources/images/icon24.png"),
         "48": require('sdk/self').data.url("ressources/images/icon48.png")
       },
-      onChange: (state) ->
+      onChange: (state) =>
         if state.checked
-          panel.show {
-            position: button
+          @panel.show {
+            position: @statusButton
           }
     })
 
-    panel = panels.Panel({
+    @panel = panels.Panel({
       contentURL: require('sdk/self').data.url("pages/popup/index.html"),
-      width: 264
-      onHide: ->
-        button.state('window', {checked: false})
+      width: 264 # 250px base + 14px padding
+      onHide: =>
+        @statusButton.state('window', {checked: false})
     })
+
+    EventBinder.handlePort(@panel.port)
+
 
   ###*
    * Sets browser wide proxy to autoconfig
@@ -35,6 +50,9 @@ class Browser
    * @param {Function} callback  callback to execute after
   ###
   setProxyAutoconfig: (pacScript, callback) ->
+    if not callback?
+      callback = ->
+
     pac = "data:text/javascript,#{pacScript}"
 
     require("sdk/preferences/service").set("network.proxy.type", 2)
@@ -47,6 +65,9 @@ class Browser
    * @param  {Function} callback callback
   ###
   clearProxy: (callback) ->
+    if not callback?
+      callback = ->
+
     require("sdk/preferences/service").reset("network.proxy.type")
     require("sdk/preferences/service").reset("network.proxy.http")
     require("sdk/preferences/service").reset("network.proxy.http_port")
@@ -57,7 +78,7 @@ class Browser
    * @param {string} iconUrl the url for the icon
   ###
   setIcon: (iconUrl) ->
-    @statusButton.contentURL = require('sdk/self').data.url(iconUrl)
+    # @statusButton.contentURL = require('sdk/self').data.url(iconUrl)
 
   ###*
    * Sets the text for the icon (if possible)
@@ -71,15 +92,16 @@ class Browser
    * @param  {string} key the key to remove
   ###
   removeFromStorage: (key) ->
-    delete require("sdk/simple-storage")[key]
+    delete require("sdk/simple-storage").storage[key]
 
   ###*
    * Writes a object into browser storage
    * @param  {Object} object the object (key, value) to write
   ###
   writeIntoStorage: (object) ->
-    ss = require("sdk/simple-storage")
+    ss = require("sdk/simple-storage").storage
     for key of object
+      console.info "~~~~~~~> Writing into firefox storage: #{key} => #{object[key]}"
       ss[key] = object[key]
 
   ###*
@@ -88,7 +110,12 @@ class Browser
    * @param  {Function} callback callback
   ###
   retrieveFromStorage: (key, callback) ->
-    callback require("sdk/simple-storage")[key]
+    if key == null
+      console.info "~~~~~~~> Returning all keys"
+      console.info require("sdk/simple-storage").storage
+      callback require("sdk/simple-storage").storage
+    else
+      callback require("sdk/simple-storage").storage[key]
 
   ###*
    * Add a event listener for the message event
@@ -108,12 +135,28 @@ class Browser
       url: url,
       onComplete: (response) ->
         if response.status == 200
-          successCallback response.text
+          successCallback JSON.parse(response.text)
         else
           # Map object so it looks similar to the normal XHR object
           response.responseJSON = {}
           response.responseJSON.message = response.text
           errorCallback response
     }).get()
+
+  ###*
+   * wrapper for setTimeout function
+   * @param {Function} callback [description]
+   * @param {int}   ms       number
+  ###
+  setTimeout: (callback, ms) ->
+    return require('sdk/timers').setTimeout(callback, ms)
+
+  ###*
+   * Wrapper for clearInterval function
+   * @param  {Object} timeoutId timeout
+  ###
+  clearTimeout: (timeoutId) ->
+    return require('sdk/timers').clearTimeout(timeoutId)
+
 
 exports.Browser = new Browser()

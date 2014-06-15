@@ -2,6 +2,7 @@
 
 class ProxyManager
   init: ->
+    {Browser} = require './browser'
 
   ###*
    * Parses a routing config and returns a usable joined proxy string
@@ -97,6 +98,6 @@ class ProxyManager
    * @param  {Function} callback callback
   ###
   clearProxy: (callback) ->
-    Browser.clearProxy()
+    Browser.clearProxy(callback)
 
 exports.ProxyManager = new ProxyManager()
