@@ -20,7 +20,7 @@ checkUrl = ->
   installButton.attr('a', '')
 
   # Finally, add a click handler
-  installButton.mouseup ->
+  $('.confirmInstallButton').mouseup ->
     # Packageid is set by the server as a seperate attribute
     packageid = installButton.attr('packageid')
 
@@ -31,5 +31,12 @@ checkUrl = ->
     )
 
     self.port.emit('getUrlFor', { url: 'pages/install/index.html', eventId: eventId } )
+
+  $('.cancelbutton').mouseup ->
+    $('.installPopupWrapper').fadeOut('fast')
+
+  # Finally, add a click handler
+  installButton.mouseup ->
+    $('.installPopupWrapper').fadeIn('fast')
 
 setInterval checkUrl, 1000

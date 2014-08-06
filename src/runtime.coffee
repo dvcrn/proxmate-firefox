@@ -43,6 +43,7 @@ class Runtime
         Browser.setIcontext("")
         console.info 'start before pac'
         pac = ProxyManager.generateProxyAutoconfigScript(packages, servers)
+        console.info(pac)
         console.info 'start before proxy manager pac'
         ProxyManager.setProxyAutoconfig(pac)
 

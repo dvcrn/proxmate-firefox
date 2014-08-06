@@ -78,12 +78,12 @@ class ProxyManager
       if parsedRules[country]?
         conditions = "#{parsedRules[country].join(' || ')}"
         configLines.push("#{statement} (#{conditions}) { return '#{@generateAndScrumbleServerString(servers)}' }")
-      i += 1
+        i += 1
 
     # Add the last else case, if no proxy was found
     configLines.push("else { return 'DIRECT'; }")
 
-    return "function FindProxyForURL(url, host) {#{configLines.join(' ')}}"
+    return String.quote("function FindProxyForURL(url, host) {#{configLines.join(' ')}}").slice(1, -1)
 
   ###*
    * Sets browser wide proxy to autoconfig
