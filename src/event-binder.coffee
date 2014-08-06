@@ -25,7 +25,7 @@ class EventBinder
     });
 
     require("sdk/page-mod").PageMod({
-        include: /.*pages\/install\/index.html.*/,
+        include: /.*proxmate\/data\/pages\/install\/index.html.*/,
         contentScriptFile: [
           require('sdk/self').data.url('bower_components/angular/angular.js'),
           require('sdk/self').data.url('bower_components/angular-route/angular-route.js'),
@@ -37,7 +37,7 @@ class EventBinder
     });
 
     require("sdk/page-mod").PageMod({
-        include: /.*pages\/options\/index.html.*/,
+        include: /.*proxmate\/data\/pages\/options\/index.html.*/,
         contentScriptFile: [
           require('sdk/self').data.url('bower_components/angular/angular.js'),
           require('sdk/self').data.url('src/pages/options.js'),
@@ -47,7 +47,17 @@ class EventBinder
           @handlePort(worker.port)
     });
 
-    # createPagemod(/.*youtube\.com\/results.*/, 'modules/youtube-search.js');
+    require("sdk/page-mod").PageMod({
+        include: /.*/,
+        contentScriptFile: [
+          require('sdk/self').data.url('bower_components/jquery/dist/jquery.js'),
+          require('sdk/self').data.url('src/page-worker/services/proxmate.js'),
+          require('sdk/self').data.url('src/page-worker/proxmatecs.js')
+        ],
+        onAttach: (worker) =>
+          @handlePort(worker.port)
+    });
+
 
   handlePort: (port) ->
     port.on('installPackage', (payload) ->
