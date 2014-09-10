@@ -25,7 +25,7 @@ class EventBinder
     });
 
     require("sdk/page-mod").PageMod({
-        include: /.*proxmate\/data\/pages\/install\/index.html.*/,
+        include: /resource\:\/\/jid1-mg7th7nunkhdna-at-jetpack\/proxmate\/data\/pages\/install\/index.html.*/,
         contentScriptFile: [
           require('sdk/self').data.url('bower_components/angular/angular.js'),
           require('sdk/self').data.url('bower_components/angular-route/angular-route.js'),
@@ -138,6 +138,7 @@ class EventBinder
 
     port.on('xhr', (payload) =>
       console.info 'doing xhr request...'
+      console.info "url: #{payload.url}"
       Browser.xhr(payload.url, 'GET', (data) ->
         console.info 'xhr success'
         console.info data

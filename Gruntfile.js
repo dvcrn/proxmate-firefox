@@ -125,6 +125,8 @@ module.exports = function (grunt) {
                         '.tmp/data/bower_components/jquery/dist/jquery.js': 'bower_components/jquery/dist/jquery.js',
                         '.tmp/data/bower_components/angular/angular.js': 'bower_components/angular/angular.min.js',
                         '.tmp/data/bower_components/angular-route/angular-route.js': 'bower_components/angular-route/angular-route.min.js',
+                        '.tmp/data/bower_components/foundation/css/foundation.min.css': 'bower_components/foundation/css/foundation.min.css',
+                        '.tmp/data/bower_components/foundation/css/normalize.css': 'bower_components/foundation/css/normalize.css',
                     },
                     {expand: true, src: ['ressources/**/*'], dest: '.tmp/data'},
                     {expand: true, src: ['pages/**/*'], dest: '.tmp/data'},
@@ -137,6 +139,8 @@ module.exports = function (grunt) {
                     'dist/data/bower_components/jquery/dist/jquery.js': 'bower_components/jquery/dist/jquery.min.js',
                     'dist/data/bower_components/angular/angular.js': 'bower_components/angular/angular.min.js',
                     'dist/data/bower_components/angular-route/angular-route.js': 'bower_components/angular-route/angular-route.min.js',
+                    'dist/data/bower_components/foundation/css/foundation.min.css': 'bower_components/foundation/css/foundation.min.css',
+                    'dist/data/bower_components/foundation/css/normalize.css': 'bower_components/foundation/css/normalize.css',
                     },
                     {expand: true, src: ['ressources/**/*'], dest: 'dist/data'},
                     {expand: true, src: ['pages/**/*'], dest: 'dist/data'},
@@ -183,7 +187,7 @@ module.exports = function (grunt) {
         'shell:distpages',
         'shell:distpageworker',
         'ngmin:dist',
-        'closurecompiler:dist',
+        // 'closurecompiler:dist',
         'cssmin:dist',
         'htmlmin:dist'
     ])

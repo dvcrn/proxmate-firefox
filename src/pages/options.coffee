@@ -35,7 +35,7 @@ angular.module('optionsApp')
       $scope.donationKeyStatus = 'Validating key... Please wait a moment.'
       encodedKey = encodeURIComponent(key)
 
-      Chrome.xhr("http://api.proxmate.me/user/validate/#{encodedKey}.json", (data) ->
+      Chrome.xhr("https://api.proxmate.me/user/validate/#{encodedKey}.json", (data) ->
         if data.isValid
           $scope.donationKeyStatus = "The key you entered is valid. Thanks for donating!"
           $scope.setDonationkey(key, ->)

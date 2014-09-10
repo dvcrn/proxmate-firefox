@@ -22,16 +22,31 @@ angular.module('proxmateApp')
   ]
 
 angular.module('proxmateApp')
-  .controller 'InstallCtrl', ['$scope', 'Chrome', '$routeParams', ($scope, Chrome, $routeParams) ->
-    $scope.status = 'Installing...'
+  .controller 'InstallCtrl', ['$rootScope', 'Chrome', '$routeParams', '$http', ($rootScope, Chrome, $routeParams, $http) ->
+    $rootScope.method = 'confirm'
+    $rootScope.method = window.location.search.split('method=')[1].split('&')[0]
 
-    Chrome.installPackage(window.location.search.split('packageId=')[1], (response) ->
-      if response.success
-        $scope.status = 'Installed successfully!'
-        $scope.$digest()
-      else
-        console.info response
-        $scope.status = response.message
-        $scope.$digest()
+    packageId = window.location.search.split('packageId=')[1].split('&')[0]
+    console.info "method:"
+    console.info window.location.search.split('method=')[1].split('&')[0]
+
+    Chrome.xhr("https://api.proxmate.me/package/#{packageId}.json", (data) =>
+      $rootScope.packageData = data
+      $rootScope.$digest()
     )
+
+    $rootScope.close = ->
+      window.close()
+
+    $rootScope.install = ->
+      $rootScope.method = 'install'
+      $rootScope.status = 'Installing...'
+      Chrome.installPackage(packageId, (response) ->
+        if response.success
+          $rootScope.status = 'Installed successfully!'
+          $rootScope.$digest()
+        else
+          $rootScope.status = response.message
+          $rootScope.$digest()
+      )
   ]

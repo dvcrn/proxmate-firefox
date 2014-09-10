@@ -20,23 +20,16 @@ checkUrl = ->
   installButton.attr('a', '')
 
   # Finally, add a click handler
-  $('.confirmInstallButton').mouseup ->
+  installButton.mouseup ->
     # Packageid is set by the server as a seperate attribute
     packageid = installButton.attr('packageid')
 
     eventId = "event-#{new Date().getTime()}"
     self.port.on(eventId, (url) =>
-      fullUrl = "#{url}?packageId=#{packageid}"
+      fullUrl = "#{url}?packageId=#{packageid}&method=confirm"
       self.port.emit('openUrl', {url: fullUrl})
     )
 
     self.port.emit('getUrlFor', { url: 'pages/install/index.html', eventId: eventId } )
-
-  $('.cancelbutton').mouseup ->
-    $('.installPopupWrapper').fadeOut('fast')
-
-  # Finally, add a click handler
-  installButton.mouseup ->
-    $('.installPopupWrapper').fadeIn('fast')
 
 setInterval checkUrl, 1000
