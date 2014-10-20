@@ -13,16 +13,16 @@ class ProxyManager
     configStrings = []
     # Parse startswith commands to shExpMatch(url, '*') expressions
     if config.startsWith.length > 0
-      configStrings.push("shExpMatch(url, #{JSON.stringify(config.startsWith + "*").replace(/"/g, "'")})")
+      configStrings.push("shExpMatch(url, #{JSON.stringify(config.startsWith + "*")})")
 
     # Parse contains commands to url.indexOf('multiple things') != -1 expressions
     if config.contains.length > 0
       for containElement in config.contains
-        configStrings.push("url.indexOf(#{JSON.stringify(containElement).replace(/"/g, "'")}) != -1")
+        configStrings.push("url.indexOf(#{JSON.stringify(containElement)}) != -1")
 
     # Parse host commands to host == 'x' expressions
     if config.host.length > 0
-      configStrings.push("host == #{JSON.stringify(config.host).replace(/"/g, "'")}")
+      configStrings.push("host == #{JSON.stringify(config.host)}")
 
     return "(#{configStrings.join(' && ')})"
 
