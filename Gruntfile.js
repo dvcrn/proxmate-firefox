@@ -64,9 +64,9 @@ module.exports = function (grunt) {
                     mangle: true,
                     compress: true,
                     banner: '/*\n' +
-                            '  <%= manifest.title %> version <%= manifest.version %> by David Mohl\n' +
+                            '  ProxMate version <%= manifest.version %> by David Mohl\n' +
                             '  Built on <%= grunt.template.today("yyyy-mm-dd @ HH:MM") %>\n' +
-                            '  Please see github.com/dabido/proxmate-chrome/ for infos\n' +
+                            '  Please see github.com/dabido/proxmate-firefox/ for infos\n' +
                             '*/\n'
                 },
                 files: [{
@@ -81,7 +81,7 @@ module.exports = function (grunt) {
                 options: {
                     compilation_level: 'SIMPLE_OPTIMIZATIONS',
                     banner: '/*\n' +
-                            '  <%= manifest.title %> version <%= manifest.version %> by David Mohl\n' +
+                            '  ProxMate version <%= manifest.version %> by David Mohl\n' +
                             '  Built on <%= grunt.template.today("yyyy-mm-dd @ HH:MM") %>\n' +
                             '  Please see github.com/dabido/proxmate-firefox/ for infos\n' +
                             '*/\n'
@@ -164,6 +164,44 @@ module.exports = function (grunt) {
                 command: 'mkdir -p dist/data/src && mv dist/lib/page-worker dist/data/src/page-worker'
             },
         },
+        replace: {
+            beta: {
+                options: {
+                    patterns: [{
+                        json: grunt.file.readJSON('config/beta.json')
+                    }]
+                },
+                files: [{
+                    expand: true,
+                    src: ['dist/**/**', '!dist/**/*.png'],
+                    dest: ''
+                }]
+            },
+            dev: {
+                options: {
+                    patterns: [{
+                        json: grunt.file.readJSON('config/dev.json')
+                    }]
+                },
+                files: [{
+                    expand: true,
+                    src: ['.tmp/**/**', '!.tmp/**/*.png'],
+                    dest: ''
+                }]
+            },
+            live: {
+                options: {
+                    patterns: [{
+                        json: grunt.file.readJSON('config/live.json')
+                    }]
+                },
+                files: [{
+                    expand: true,
+                    src: ['dist/**/**', '!dist/**/*.png'],
+                    dest: ''
+                }]
+            },
+        },
         clean: {
             src: '.tmp',
             dist: 'dist'
@@ -178,7 +216,15 @@ module.exports = function (grunt) {
         'copy:src',
         'shell:srcpages',
         'shell:srcpageworker',
-    ])
+        'replace:dev'
+    ]);
+
+    grunt.registerTask('minify', [
+        'ngmin:dist',
+        'closurecompiler:dist',
+        'cssmin:dist',
+        'htmlmin:dist'
+    ]);
 
     grunt.registerTask('build', [
         'clean:dist',
@@ -186,13 +232,21 @@ module.exports = function (grunt) {
         'copy:dist',
         'shell:distpages',
         'shell:distpageworker',
-        'ngmin:dist',
-        // 'closurecompiler:dist',
-        'cssmin:dist',
-        'htmlmin:dist'
-    ])
+    ]);
 
-    grunt.registerTask('serve', ['src', 'watch'])
-    grunt.registerTask('test', ['src', 'copy:test', 'browserify:test','karma']);
+    grunt.registerTask('build-live', [
+        'build',
+        'replace:live',
+        'minify'
+    ]);
+
+    grunt.registerTask('build-beta', [
+        'build',
+        'replace:beta',
+        'minify'
+    ]);
+
+    grunt.registerTask('serve', ['src', 'watch']);
+    grunt.registerTask('test', ['src', 'copy:test', 'browserify:test', 'karma']);
     grunt.registerTask('default', 'test');
 };

@@ -25,7 +25,7 @@ class EventBinder
     });
 
     require("sdk/page-mod").PageMod({
-        include: /resource\:\/\/jid1-mg7th7nunkhdna-at-jetpack\/proxmate\/data\/pages\/install\/index.html.*/,
+        include: /resource\:\/\/@@PACKAGE_FULL_IDENTIFIER\/proxmate\/data\/pages\/install\/index.html.*/,
         contentScriptFile: [
           require('sdk/self').data.url('bower_components/angular/angular.js'),
           require('sdk/self').data.url('bower_components/angular-route/angular-route.js'),
