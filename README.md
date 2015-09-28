@@ -2,7 +2,7 @@
 
 ## ProxMate for Firefox
 
-Extension store version here - https://chrome.google.com/webstore/detail/proxmate/ifalmiidchkjjmkkbkoaibpmoeichmki
+Extension store version here - https://addons.mozilla.org/en-US/firefox/addon/proxmate/
 
 ## Building
 
